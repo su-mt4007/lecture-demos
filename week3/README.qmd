@@ -1,0 +1,69 @@
+---
+title: Week 3
+format: gfm
+---
+> Question: Can we distinguish penguin species based on simple body measurements?
+
+# The data
+```{python}
+import seaborn as sb
+import matplotlib.pyplot as plt
+
+penguins = sb.load_dataset("penguins")
+penguins.head()
+```
+
+Unique species of penguins
+```{python}
+species = penguins.loc[:, "species"]
+unique_species = species.unique()
+for species in unique_species:
+    print(species)
+```
+
+Extract the `numerical colums``
+```{python}
+numerical_columns = ["bill_length_mm","bill_depth_mm", "flipper_length_mm", "body_mass_g"]
+```
+
+Size of dataset
+```{python}
+penguins.shape
+```
+
+# Process Data
+
+Remove Na's
+```{python}
+cleaned_penguins = penguins.dropna()
+print(f"size of remaning data {cleaned_penguins.shape}" )
+```
+
+# Analyse data
+
+## Univariate Analysis
+
+```{python}
+for num_col in numerical_columns:
+    sb.histplot(cleaned_penguins, x=num_col, hue="species")
+    plt.show()
+```
+
+## Multivariate Analysis
+```{python}
+sb.pairplot(cleaned_penguins, vars=numerical_columns, hue="species")
+```
+
+## QUIZ!!!
+```{python}
+
+index = [247, 0]
+
+cleaned_penguins.loc[index, numerical_columns]
+```
+
+### Answer
+```{python}
+cleaned_penguins.loc[index, "species"]
+```
+> Question: How do measurements vary across islands and sex?
