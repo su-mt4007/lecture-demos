@@ -1,0 +1,63 @@
+---
+title: Week 5
+format: gfm
+---
+
+## Example of JSON
+```{json}
+{
+    "username" : "taariqnazar",
+    "friends" : ["taariq friend 1", "taariqs friend 2"]
+}
+```
+
+## Example of XML
+```{xml}
+<username>
+taariqnazar
+</username>
+<friends>
+    <friend>
+        ...
+    </friend>
+    <friend>
+        ...
+    </friend>
+</friends>
+```
+
+# Retrieving data from REST API
+
+```{python}
+import requests 
+
+response = requests.get("https://cataas.com/api/cats?tags=cute")
+data = response.json()
+
+print(data)
+```
+
+# Web scraping
+
+```{python}
+from bs4 import BeautifulSoup as bs
+
+response = requests.get("https://books.toscrape.com/")
+html = response.text
+
+soup = bs(html, "html.parser")
+
+section = soup.find("section")
+lis = section.find_all("li")
+
+for li in lis:
+    # Title → <h3><a title="..."></a></h3>
+    a_tag = li.select_one("h3 a")
+    title = a_tag.get("title") if a_tag else None
+
+    # Price → <p class="price_color">£...</p>
+    price_tag = li.select_one("p.price_color")
+    price = price_tag.get_text(strip=True) if price_tag else None
+
+    print(title, price)
+```
